@@ -1,0 +1,8 @@
+/renv/library/
+*.Rproj
+.Rhistory
+.RData
+echo "report/" >> .gitignore
+echo "renv/library/" >> .gitignore
+echo "renv/cache/" >> .gitignore
+echo "*.Rproj" >> .gitignore

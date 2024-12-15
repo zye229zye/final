@@ -1,0 +1,52 @@
+---
+title: "Heart Disease Data Analysis"
+author: "ZIFAN YE"
+date: "`r Sys.Date()`"
+output: html_document
+---
+# Introduction
+
+In this analysis, we utilize a dataset related to heart disease to explore the relationships between various risk factors（Age Chest Pain Cholesterol Levels） and the incidence of heart disease（target=1）.  Our objectives are to identify the key factors associated with heart disease risk and to provide deeper insights through statistical analysis and visualization.
+
+# Data Loading
+```{r echo=FALSE, results='hide'}
+# Load necessary libraries
+library(readr)
+data <- read_csv("data/heart.csv", show_col_types = FALSE)
+```
+```{r load-data,echo=FALSE}
+
+knitr::kable(head(data), caption = "First few rows of the dataset")
+
+```
+#descriptive analysis
+
+This section summarizes key characteristics of age, serum cholesterol levels, chest pain type, and heart disease presence using descriptive statistics.
+```{r summary-table,echo=FALSE}
+
+knitr::include_graphics("output/table1.png")
+```
+#Graphical Analysis
+
+A scatter plot illustrates the relationship between serum cholesterol levels and age, differentiated by heart disease presence.
+```{r, plot-data,echo=FALSE}
+knitr::include_graphics("output/scatter_plot.png")
+
+```
+#Regression Analysis
+
+This section employs a generalized linear model to examine how age, serum cholesterol levels, and chest pain type affect the likelihood of heart disease.
+# Fit the primary regression model
+```{r, fit-primary-model,echo=FALSE}
+knitr::include_graphics("output/primary_model.png")
+
+```
+
+#Secondary Model
+
+# Fit the secondary regression model
+```{r, secondary-model,echo=FALSE}
+# Include pre-generated secondary model table or text output
+knitr::include_graphics("output/secondary_model.png")
+
+```
