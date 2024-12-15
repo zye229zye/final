@@ -1,61 +1,90 @@
-Heart Disease Data Analysis
+#Heart Disease Data Analysis
 
-This project analyzes a heart disease dataset, focusing on key risk factors like age, cholesterol levels, and chest pain type. The results are summarized in a final report.
-
+This project analyzes a heart disease dataset, focusing on key risk factors such as age, cholesterol levels, and chest pain type. The results are summarized in a final report, which includes descriptive statistics, scatter plots, and regression analyses.
 
 #Project Structure
+
 project/
 ├── data/                   
-│   └── heart.csv
+│   └── heart.csv                     
 ├── code/                   
-│   ├── descriptive_analysis.R
-│   ├── graphical_analysis.R
-│   ├── regression_analysis.R
-├── output/                 
-├── heart_analysis.Rmd     
-├── renv/                   
-├── renv.lock               
-├── Dockerfile              
-├── .gitignore            
-└── Makefile             
+│   ├── descriptive_analysis.R        
+│   ├── graphical_analysis.R          
+│   ├── regression_analysis.R         
+├── output/                           
+├── heart_analysis.Rmd                
+├── renv/                             
+├── renv.lock                         
+├── Dockerfile                       
+├── .gitignore                        
+└── Makefile                          
 
 #Workflow
 
-*Generate Final Report*
-Run the following command to generate the report：make
+#Generate Final Report
 
-*Clean Up*
-Remove all generated files:clean up
+To generate the final report, run:
 
-##individual code
+make
 
-Descriptive Statistics Table (output/table1.png):
-Code: code/descriptive_analysis.R
+Clean Up
+
+#To remove all generated files:
+
+make clean
+
+#Individual Code Descriptions
+
+Descriptive Statistics Table
+
+Output: output/table1.pngCode: code/descriptive_analysis.RCommand:
 
 make output/table1.png
-Code: code/descriptive_analysis.R
-Scatter Plot (output/scatter_plot.png):
+
+Scatter Plot
+
+Output: output/scatter_plot.pngCode: code/graphical_analysis.RCommand:
 
 make output/scatter_plot.png
-Code: code/graphical_analysis.R
-Primary Regression Results (output/primary_model.png):
+
+Primary Regression Results
+
+Output: output/primary_model.pngCode: code/regression_analysis.RCommand:
 
 make output/primary_model.png
-Code: code/regression_analysis.R
-Secondary Regression Results (output/secondary_model.png):
+
+Secondary Regression Results
+
+Output: output/secondary_model.pngCode: code/regression_analysis.RCommand:
 
 make output/secondary_model.png
-Code: code/regression_analysis.R
+
+#Using Docker
 
 Build Docker Image
+
+To build the Docker image, run:
+
 make docker-build
 
 Run the Docker Container
-docker run --rm -v $(pwd)/output:/project/output yezifan/heart-disease-analysis
+
+To run the container and generate the report:
+
+make docker-run
+
+Alternatively, you can directly run:
+
+docker run --rm -v $(pwd)/output:/project/output zifanye218/heart-analysis
 
 #Outputs
-*The final report (output/heart_analysis.html) includes:*
+
+The final report (output/heart_analysis.html) includes:
+
 Data Overview: Preview of the dataset.
-Descriptive Statistics: Summary table.
-Scatter Plot: Visualization of key variables.
+
+Descriptive Statistics: Summary table of key variables.
+
+Scatter Plot: Visualization of relationships between variables.
+
 Regression Analysis: Summaries of primary and secondary models.

@@ -1,57 +1,57 @@
-# Default target: Run the Docker container to generate the report
-all: docker-run
-
-# -----------------------------
-# Docker-based rules
-# -----------------------------
-# Build Docker image locally
+# Build the Docker image
 docker-build:
-	docker buildx build --platform linux/amd64 -t heart-analysis:latest .
+	docker build -t zifanye218/heart-analysis .
 
+# Run the Docker container to generate the report
+docker-run: docker-build
+	docker run --rm -v $$(pwd)/report:/code/output zifanye218/heart-analysis
 
-# Push Docker image to Docker Hub
-docker-push:
-	docker push yezifan/heart-analysis:latest
+# Initialize renv and create renv.lock
+renv.lock:
+	Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv'); renv::init(bare = TRUE); renv::snapshot()"
 
-# Run the Docker container using Docker Hub image
-docker-run:
-	docker run --rm -v $(PWD)/output:/project/output yezifan/heart-analysis:latest
+# Restore dependencies using renv
+restore:
+	Rscript -e "renv::restore()"
 
-# -----------------------------
-# Native R-based rules (for local execution)
-# -----------------------------
-# Default target for local execution
-local: output/heart_analysis.html
-
-# Generate the final report locally
+# Build the final report
 output/heart_analysis.html: heart_analysis.Rmd .all_outputs
 	Rscript -e "rmarkdown::render('heart_analysis.Rmd', output_file = 'output/heart_analysis.html')"
 
-# Ensure all intermediate outputs exist
+# Create all intermediate outputs
 .all_outputs: output/table1.png output/scatter_plot.png output/primary_model.png output/secondary_model.png
+	$(MAKE) output/table1.png
+	$(MAKE) output/scatter_plot.png
+	$(MAKE) output/primary_model.png
+	$(MAKE) output/secondary_model.png
 	touch .all_outputs
 
-# Generate Table 1 locally
+# Generate the descriptive statistics table
 output/table1.png: code/descriptive_analysis.R data/heart.csv
 	Rscript code/descriptive_analysis.R && touch output/table1.png
 
-# Generate scatter plot locally
+# Generate the scatter plot
 output/scatter_plot.png: code/graphical_analysis.R data/heart.csv
 	Rscript code/graphical_analysis.R && touch output/scatter_plot.png
 
-# Generate primary regression model summary locally
+# Generate the primary regression model
 output/primary_model.png: code/regression_analysis.R data/heart.csv
 	Rscript code/regression_analysis.R && touch output/primary_model.png
 
-# Generate secondary regression model summary locally
+# Generate the secondary regression model
 output/secondary_model.png: code/regression_analysis.R data/heart.csv
 	Rscript code/regression_analysis.R && touch output/secondary_model.png
 
-# Install R dependencies locally
-install:
-	Rscript -e 'if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv"); renv::restore()'
-
-# Clean up generated files
-.PHONY: clean
+# Clean up all generated files
 clean:
-	rm -rf output/*.png output/*.html .all_outputs
+	rm -f output/*.png output/*.html .all_outputs
+	# Remove renv only if explicitly needed
+	rm -rf report/
+
+
+# Remove Docker image
+clean-docker:
+	docker rmi -f zifanye218/heart-analysis || true
+
+.PHONY: all docker-build docker-run clean restore clean-docker
+
